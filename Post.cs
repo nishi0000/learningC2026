@@ -2,23 +2,17 @@
 
 class Post
 {
-    int Id {get;set;}
-    string? Author {get;set;}
+    public int Id {get;set;}
+    public string Author {get;set;}
+    public string Message {get;set;}
+    public DateTime CreatedAt {get;set;}
 
-    string? Message {get;set;}
-
-    DateTime CreatedAt {get;set;}
-
-    List<Post> post = [{Id=1,"test","test",DateTime.Now}];
-
-    static void Main()
-    {
-        Console.WriteLine("Hello, World!");
+    public Post(string author,string message)
+    {   
+        Author = author;
+        Message = message;
     }
 
-    void ShowPosts()
-    {
-        
-    }
+    
 
 }
