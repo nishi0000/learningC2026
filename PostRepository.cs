@@ -58,7 +58,7 @@ class PostRepository
         WriteJson();
 
     }
-    public List<Post>? Search(string keyword)
+    public List<Post> Search(string keyword)
     {
         return posts.Where(x => x.Author.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
                                     x.Message.Contains(keyword, StringComparison.OrdinalIgnoreCase))
