@@ -18,30 +18,73 @@ class ConsoleMenu
         do 
         {
             int choice = AskChoice();
-            if (choice == 1)
-            {
-                if (posts.Count() <= 0)
-                {
-                    
-                    Console.WriteLine($"一覧なし！"); 
-                }
-                else
-                {
+
+            switch(choice){
+                case 1:
+                    if (posts.Count() <= 0)
+                    {
+                        Console.WriteLine($"一覧なし！"); 
+                        break;
+                    }
+                    else
+                    {
+                        ShowPosts(posts);
+                        break;
+                    }
+
+                case 2:
+                    string name = InputMessage("名前");
+                    string message = InputMessage("メッセージ");
+
+                    _postRepository.Add(name,message);
                     ShowPosts(posts);
-                }
-            }
-            else if(choice == 2)
-            {
-                string name = InputMessage("名前");
-                string message = InputMessage("メッセージ");
+                    break;
 
-                _postRepository.Add(name,message);
-                ShowPosts(posts);
+                case 3:
+                    string inputKeyword = InputMessage("検索したい語句");
 
-            }
-            else
-            {
-                break;
+                    if (_postRepository.Search(inputKeyword).Count()==0)
+                    {
+                        Console.WriteLine("見つかりませんでした");
+                    }
+                    else
+                    {       
+                        ShowPosts(_postRepository.Search(inputKeyword));
+                    }
+                    break;
+
+                case 4:
+                    while (true)
+                    {
+                        string inputId = InputMessage("削除したいID");
+
+                        Console.WriteLine($"本当に削除しますか？ y/n 削除ID：{inputId}");
+                        if(){}
+
+
+                        if(int.TryParse(inputId, out int id))
+                        {
+                            if (_postRepository.Delete(id))
+                            {
+                                ShowPosts(posts);
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("存在しないIDです");
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("数値を入力してください");
+                            break;
+                        }
+                    }
+                    break;
+
+                default:
+                    return;    
             }
 
         }while(true);
@@ -52,14 +95,14 @@ class ConsoleMenu
 
         while (true)
         {
-            Console.WriteLine("数値を入力してください（1: 一覧 / 2: 投稿 / 0: 終了）");
+            Console.WriteLine("数値を入力してください（1: 一覧 / 2: 投稿 / 3: 検索 / 4: 削除 / 0: 終了）");
             var input = Console.ReadLine();
 
             if(int.TryParse(input, out int choice))
             {
-                if( choice < 0 || 2 < choice)
+                if( choice < 0 || 4 < choice)
                 {
-                    Console.WriteLine("0〜2 を入力してください");
+                    Console.WriteLine("0〜4 を入力してください");
                 }
                 else
                 {

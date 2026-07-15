@@ -14,7 +14,7 @@ class PostRepository
 
     private List<Post> ReadJson()
     {
-        if(File.Exists(path))
+        if (File.Exists(path))
         {
             var load = JsonSerializer.Deserialize<List<Post>>(File.ReadAllText(path));
             return load ?? [];
@@ -28,10 +28,24 @@ class PostRepository
         return posts;
     }
 
-    public void Add(string name,string message)
+    public bool Delete(int id)
+    {
+        if (posts.FirstOrDefault(x => x.Id == id) is null)
+        {
+            return false;
+        }
+        else
+        {
+            posts.RemoveAll(x => x.Id == id);
+            WriteJson();
+            return true;
+        }
+    }
+
+    public void Add(string name, string message)
     {
         int id;
-        if(posts.Count == 0)
+        if (posts.Count == 0)
         {
             id = 1;
         }
@@ -40,20 +54,26 @@ class PostRepository
             id = posts.Select(x => x.Id).Max() + 1;
         }
 
-        posts.Add(new Post(name,message) {Id=id,CreatedAt=DateTime.Now});
+        posts.Add(new Post(name, message) { Id = id, CreatedAt = DateTime.Now });
         WriteJson();
 
+    }
+    public List<Post>? Search(string keyword)
+    {
+        return posts.Where(x => x.Author.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
+                                    x.Message.Contains(keyword, StringComparison.OrdinalIgnoreCase))
+                                    .ToList();
     }
 
     private void WriteJson()
     {
         // インデント（整形）を有効にする
-        var options = new JsonSerializerOptions 
-        { 
-            WriteIndented = true 
+        var options = new JsonSerializerOptions
+        {
+            WriteIndented = true
         };
 
-        File.WriteAllText(path,JsonSerializer.Serialize(this.posts,options));
+        File.WriteAllText(path, JsonSerializer.Serialize(this.posts, options));
 
     }
 
