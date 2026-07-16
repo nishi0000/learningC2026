@@ -4,20 +4,21 @@ namespace BoardApp;
 class ConsoleMenu
 {
     PostRepository _postRepository;
+    CsvExporter _csvExporter;
 
-    public ConsoleMenu(PostRepository postRepository)
+    public ConsoleMenu(PostRepository postRepository,CsvExporter csvExporter)
     {
 
         _postRepository = postRepository;
+        _csvExporter = csvExporter;
 
     }
 
     public void ShowMenu()
     {
-        List<Post> posts = _postRepository.GetAll();
-
         do
         {
+            List<Post> posts = _postRepository.GetAll();
             int choice = AskChoice();
 
             switch (choice)
@@ -96,6 +97,12 @@ class ConsoleMenu
                         }
                     }
                     break;
+                
+                case 5:
+                    Console.WriteLine("CSV出力します");
+                    _csvExporter.CreateCsv(posts);
+
+                    break;
 
                 default:
                     return;
@@ -109,14 +116,14 @@ class ConsoleMenu
 
         while (true)
         {
-            Console.WriteLine("数値を入力してください（1: 一覧 / 2: 投稿 / 3: 検索 / 4: 削除 / 0: 終了）");
+            Console.WriteLine("数値を入力してください（1: 一覧 / 2: 投稿 / 3: 検索 / 4: 削除 / 5: CSV出力 / 0: 終了）");
             var input = Console.ReadLine();
 
             if (int.TryParse(input, out int choice))
             {
-                if (choice < 0 || 4 < choice)
+                if (choice < 0 || 5 < choice)
                 {
-                    Console.WriteLine("0〜4 を入力してください");
+                    Console.WriteLine("0〜5 を入力してください");
                 }
                 else
                 {

@@ -6,7 +6,8 @@ class Program
     static void Main()
     {
         var postRepository = new PostRepository();
-        var consoleMenu = new ConsoleMenu(postRepository);
+        var csvExporter = new CsvExporter();
+        var consoleMenu = new ConsoleMenu(postRepository,csvExporter);
         consoleMenu.ShowMenu();
     }
 

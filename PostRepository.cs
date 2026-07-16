@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Text;
 
 namespace BoardApp;
 
@@ -22,6 +23,8 @@ class PostRepository
 
         return [];
     }
+
+
 
     public List<Post> GetAll()
     {
