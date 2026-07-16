@@ -1,4 +1,3 @@
-﻿
 namespace BoardApp;
 
 class Program
@@ -7,8 +6,7 @@ class Program
     {
         var postRepository = new PostRepository();
         var csvExporter = new CsvExporter();
-        var consoleMenu = new ConsoleMenu(postRepository,csvExporter);
+        var consoleMenu = new ConsoleMenu(postRepository, csvExporter);
         consoleMenu.ShowMenu();
     }
-
 }
